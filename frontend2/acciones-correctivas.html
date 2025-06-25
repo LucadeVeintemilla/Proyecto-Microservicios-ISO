@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acciones Correctivas - SGSI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- El navbar se cargará dinámicamente desde partials/navbar.html -->
+
+    <main class="container py-4">
+        <h1 class="mb-4"><i class="fas fa-tasks me-2"></i>Acciones Correctivas</h1>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex gap-2">
+                <button class="btn btn-primary" id="btnNuevoPlanAccion"><i class="fas fa-plus me-2"></i>Nuevo Plan de Acción</button>
+                <select class="form-select w-auto" id="filtroEstado">
+                    <option value="">Estado: Todos</option>
+                    <option value="PENDIENTE">Pendiente</option>
+                    <option value="EN_PROCESO">En Proceso</option>
+                    <option value="COMPLETADO">Completado</option>
+                    <option value="CANCELADO">Cancelado</option>
+                </select>
+            </div>
+            <div class="input-group w-auto">
+                <input class="form-control" placeholder="Buscar plan de acción..." id="inputBuscarPlan">
+                <button class="btn btn-outline-secondary" id="btnBuscarPlan"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Hallazgo</th>
+                                <th>Tipo</th>
+                                <th>Responsable</th>
+                                <th>Fecha Límite</th>
+                                <th>Estado</th>
+                                <th>Progreso</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaPlanesAccion"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Plan de Acción -->
+    <div class="modal fade" id="modalPlanAccion" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalPlan">Nuevo Plan de Acción</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formPlanAccion">
+                        <input type="hidden" name="id" id="planId">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Hallazgo *</label>
+                                <select class="form-select select2" name="hallazgo_id" required></select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tipo de Acción *</label>
+                                <select class="form-select" name="tipo_accion" required>
+                                    <option value="CORRECTIVA">Correctiva</option>
+                                    <option value="PREVENTIVA">Preventiva</option>
+                                    <option value="MEJORA">Mejora</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción *</label>
+                            <textarea class="form-control" name="descripcion" rows="3" required></textarea>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Responsable *</label>
+                                <select class="form-select select2" name="responsable" required></select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Estado *</label>
+                                <select class="form-select" name="estado" required>
+                                    <option value="PENDIENTE">Pendiente</option>
+                                    <option value="EN_PROCESO">En Proceso</option>
+                                    <option value="COMPLETADO">Completado</option>
+                                    <option value="CANCELADO">Cancelado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha Inicio *</label>
+                                <input type="date" class="form-control" name="fecha_inicio" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha Fin Planificada *</label>
+                                <input type="date" class="form-control" name="fecha_fin_planificada" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha Fin Real</label>
+                                <input type="date" class="form-control" name="fecha_fin_real">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">¿Eficacia comprobada?</label>
+                                <select class="form-select" name="eficacia">
+                                    <option value="">No evaluado</option>
+                                    <option value="true">Sí</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Resultado</label>
+                            <textarea class="form-control" name="resultado" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary" id="btnGuardarPlan">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Actividades -->
+    <div class="modal fade" id="modalActividades" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalActividades">Actividades del Plan</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="actividadesContainer">
+                        <!-- Actividades existentes -->
+                    </div>
+                    <hr>
+                    <h6>Agregar nueva Actividad</h6>
+                    <form id="formActividad">
+                        <input type="hidden" name="plan_accion_id" id="actividadPlanId">
+                        <input type="hidden" name="id" id="actividadId">
+                        <div class="mb-3">
+                            <label class="form-label">Descripción *</label>
+                            <textarea class="form-control" name="descripcion" rows="2" required></textarea>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Responsable *</label>
+                                <select class="form-select select2" name="responsable" required></select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Estado *</label>
+                                <select class="form-select" name="estado" required>
+                                    <option value="PENDIENTE">Pendiente</option>
+                                    <option value="EN_PROCESO">En Proceso</option>
+                                    <option value="COMPLETADO">Completado</option>
+                                    <option value="CANCELADO">Cancelado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha Inicio *</label>
+                                <input type="date" class="form-control" name="fecha_inicio" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha Fin Planificada *</label>
+                                <input type="date" class="form-control" name="fecha_fin_planificada" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha Fin Real</label>
+                                <input type="date" class="form-control" name="fecha_fin_real">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Evidencia (URL)</label>
+                                <input class="form-control" name="evidencia" placeholder="https://...">
+                            </div>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary" id="btnAgregarActividad">
+                                <i class="fas fa-plus me-1"></i> Agregar Actividad
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/utility.js"></script>
+    <script src="assets/js/acciones-correctivas.js"></script>
+</body>
+</html>

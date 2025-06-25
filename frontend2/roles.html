@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Roles - SGSI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet">
+    <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- El navbar se cargará dinámicamente desde partials/navbar.html -->
+
+    <main class="container py-4">
+        <h1 class="mb-4"><i class="fas fa-users-cog me-2"></i>Gestión de Roles y Permisos</h1>
+
+        <!-- Pestañas de navegación -->
+        <ul class="nav nav-tabs mb-4" id="rolesTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="roles-tab" data-bs-toggle="tab" data-bs-target="#roles-content" type="button" role="tab">
+                    <i class="fas fa-user-tag me-2"></i>Roles
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="permisos-tab" data-bs-toggle="tab" data-bs-target="#permisos-content" type="button" role="tab">
+                    <i class="fas fa-key me-2"></i>Permisos
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="conflictos-tab" data-bs-toggle="tab" data-bs-target="#conflictos-content" type="button" role="tab">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Conflictos
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="auditoria-tab" data-bs-toggle="tab" data-bs-target="#auditoria-content" type="button" role="tab">
+                    <i class="fas fa-history me-2"></i>Auditoría
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="rolesTabsContent">
+            <!-- Pestaña de Roles -->
+            <div class="tab-pane fade show active" id="roles-content" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <button class="btn btn-primary" id="btnNuevoRol"><i class="fas fa-plus me-2"></i>Nuevo Rol</button>
+                    <div class="input-group w-auto">
+                        <input class="form-control" type="search" placeholder="Buscar rol..." id="inputBuscarRol">
+                        <button class="btn btn-outline-secondary" id="btnBuscarRol"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+
+                <div class="card shadow">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Predefinido</th>
+                                        <th>Fecha Creación</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaRoles">
+                                    <!-- Los roles se cargarán dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña de Permisos -->
+            <div class="tab-pane fade" id="permisos-content" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex gap-2 align-items-center">
+                        <button class="btn btn-primary" id="btnNuevoPermiso"><i class="fas fa-plus me-2"></i>Nuevo Permiso</button>
+                        <label class="mb-0 ms-3 me-2">Filtrar por módulo:</label>
+                        <select class="form-select" id="selectModuloPermiso">
+                            <option value="">Todos los módulos</option>
+                            <option value="ROLES">Roles</option>
+                            <option value="USUARIOS">Usuarios</option>
+                            <option value="RIESGOS">Riesgos</option>
+                            <option value="DOCUMENTACION">Documentación</option>
+                            <option value="INCIDENTES">Incidentes</option>
+                            <option value="PROVEEDORES">Proveedores</option>
+                            <option value="AUDITORIAS">Auditorías</option>
+                        </select>
+                    </div>
+                    <div class="input-group w-auto">
+                        <input class="form-control" type="search" placeholder="Buscar permiso..." id="inputBuscarPermiso">
+                        <button class="btn btn-outline-secondary" id="btnBuscarPermiso"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+
+                <div class="card shadow">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Código</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Módulo</th>
+                                        <th>Es Crítico</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaPermisos">
+                                    <!-- Los permisos se cargarán dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña de Conflictos -->
+            <div class="tab-pane fade" id="conflictos-content" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <button class="btn btn-primary" id="btnNuevoConflicto"><i class="fas fa-plus me-2"></i>Nuevo Conflicto</button>
+                </div>
+
+                <div class="card shadow">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Rol A</th>
+                                        <th>Rol B</th>
+                                        <th>Descripción</th>
+                                        <th>Fecha Creación</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaConflictos">
+                                    <!-- Los conflictos se cargarán dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña de Auditoría -->
+            <div class="tab-pane fade" id="auditoria-content" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5><i class="fas fa-history me-2"></i>Registro de Auditoría</h5>
+                    <div class="input-group w-auto">
+                        <input class="form-control" type="date" id="fechaAuditoria" value="">
+                        <button class="btn btn-outline-secondary" id="btnFiltrarAuditoria"><i class="fas fa-filter"></i></button>
+                    </div>
+                </div>
+
+                <div class="card shadow">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Usuario</th>
+                                        <th>Fecha</th>
+                                        <th>Acción</th>
+                                        <th>Módulo</th>
+                                        <th>Entidad</th>
+                                        <th>Detalles</th>
+                                        <th>IP</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaAuditoria">
+                                    <!-- Los registros de auditoría se cargarán dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Rol -->
+    <div class="modal fade" id="modalRol" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalRol">Nuevo Rol</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formRol">
+                        <input type="hidden" id="rolId" name="id">
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="nombre" class="form-label">Nombre *</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="esPredefinido" class="form-label">Es Predefinido</label>
+                                <div class="form-check form-switch mt-2">
+                                    <input class="form-check-input" type="checkbox" id="esPredefinido" name="es_predefinido">
+                                    <label class="form-check-label" for="esPredefinido"></label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="descripcion" name="descripcion" rows="2"></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Permisos Asignados *</label>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="nav flex-column nav-pills" id="permisos-tab-list" role="tablist">
+                                        <button class="nav-link active" id="todos-permisos-tab" data-bs-toggle="pill" data-bs-target="#todos-permisos" type="button" role="tab">Todos</button>
+                                        <button class="nav-link" id="roles-permisos-tab" data-bs-toggle="pill" data-bs-target="#roles-permisos" type="button" role="tab">Roles</button>
+                                        <button class="nav-link" id="usuarios-permisos-tab" data-bs-toggle="pill" data-bs-target="#usuarios-permisos" type="button" role="tab">Usuarios</button>
+                                        <button class="nav-link" id="riesgos-permisos-tab" data-bs-toggle="pill" data-bs-target="#riesgos-permisos" type="button" role="tab">Riesgos</button>
+                                        <button class="nav-link" id="docs-permisos-tab" data-bs-toggle="pill" data-bs-target="#docs-permisos" type="button" role="tab">Documentación</button>
+                                        <button class="nav-link" id="auditorias-permisos-tab" data-bs-toggle="pill" data-bs-target="#auditorias-permisos" type="button" role="tab">Auditorías</button>
+                                        <button class="nav-link" id="incidentes-permisos-tab" data-bs-toggle="pill" data-bs-target="#incidentes-permisos" type="button" role="tab">Incidentes</button>
+                                        <button class="nav-link" id="proveedores-permisos-tab" data-bs-toggle="pill" data-bs-target="#proveedores-permisos" type="button" role="tab">Proveedores</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="tab-content" id="permisos-tab-content">
+                                        <div class="tab-pane fade show active" id="todos-permisos" role="tabpanel">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input check-all" type="checkbox" id="checkAllPermisos">
+                                                <label class="form-check-label" for="checkAllPermisos">
+                                                    Seleccionar todos
+                                                </label>
+                                            </div>
+                                            <hr>
+                                            <div id="todos-permisos-list" class="permisos-checklist">
+                                                <!-- Aquí se cargarán todos los permisos -->
+                                            </div>
+                                        </div>
+                                        <!-- Contenido de las demás pestañas se cargará dinámicamente -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarRol">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Permiso -->
+    <div class="modal fade" id="modalPermiso" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalPermiso">Nuevo Permiso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formPermiso">
+                        <input type="hidden" id="permisoId" name="id">
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="codigoPermiso" class="form-label">Código *</label>
+                                <input type="text" class="form-control" id="codigoPermiso" name="codigo" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="moduloPermiso" class="form-label">Módulo *</label>
+                                <select class="form-select" id="moduloPermiso" name="modulo" required>
+                                    <option value="">Seleccione un módulo</option>
+                                    <option value="ROLES">Roles</option>
+                                    <option value="USUARIOS">Usuarios</option>
+                                    <option value="RIESGOS">Riesgos</option>
+                                    <option value="DOCUMENTACION">Documentación</option>
+                                    <option value="AUDITORIAS">Auditorías</option>
+                                    <option value="INCIDENTES">Incidentes</option>
+                                    <option value="PROVEEDORES">Proveedores</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="nombrePermiso" class="form-label">Nombre *</label>
+                            <input type="text" class="form-control" id="nombrePermiso" name="nombre" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="descripcionPermiso" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="descripcionPermiso" name="descripcion" rows="2"></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="esCriticoPermiso" name="es_critico">
+                                <label class="form-check-label" for="esCriticoPermiso">Es Crítico</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarPermiso">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Conflicto -->
+    <div class="modal fade" id="modalConflicto" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalConflicto">Registrar Conflicto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formConflicto">
+                        <input type="hidden" id="conflictoId" name="id">
+                        
+                        <div class="mb-3">
+                            <label for="rolA" class="form-label">Rol A *</label>
+                            <select class="form-select" id="rolA" name="rol_a_id" required>
+                                <option value="">Seleccione un rol</option>
+                                <!-- Se cargarán dinámicamente -->
+                            </select>
+                            <div class="form-text">Este rol no puede coexistir con el Rol B.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="rolB" class="form-label">Rol B *</label>
+                            <select class="form-select" id="rolB" name="rol_b_id" required>
+                                <option value="">Seleccione un rol</option>
+                                <!-- Se cargarán dinámicamente -->
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="descripcionConflicto" class="form-label">Descripción *</label>
+                            <textarea class="form-control" id="descripcionConflicto" name="descripcion" rows="3" required></textarea>
+                            <div class="form-text">Explique la razón del conflicto de segregación de funciones.</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarConflicto">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/utility.js"></script>
+    <script src="assets/js/roles.js"></script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+/* Estilos personalizados para SGSI */
+
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+}
+
+/* Estilos del menú de navegación */
+.navbar {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .nav-link {
+    padding: 0.5rem 0.8rem;
+}
+
+.navbar .nav-link i {
+    margin-right: 0.25rem;
+}
+
+/* Estilos de las tarjetas */
+.card {
+    border-radius: 0.5rem;
+    border: none;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
+    padding: 0.75rem 1.25rem;
+}
+
+.card-footer {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-top: none;
+    padding: 0.75rem 1.25rem;
+}
+
+/* Animaciones para tarjetas */
+.card-hover:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+}
+
+/* Estilos para las tablas */
+.table th {
+    border-top: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* Estilos para formularios */
+.form-control:focus {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+.btn-primary {
+    background-color: #4e73df;
+    border-color: #4e73df;
+}
+
+.btn-primary:hover {
+    background-color: #2e59d9;
+    border-color: #2653d4;
+}
+
+/* Estilos para la página de login */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4e73df;
+    background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
+}
+
+.login-card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    max-width: 400px;
+    width: 100%;
+    padding: 2rem;
+}
+
+.login-logo {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+/* Personalización para los gráficos */
+.chart-container {
+    position: relative;
+    height: 300px;
+}
+
+/* Animaciones y transiciones */
+.fade-in {
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+}
+
+/* Status badges */
+.badge-pending {
+    background-color: #f6c23e;
+    color: #fff;
+}
+
+.badge-completed {
+    background-color: #1cc88a;
+    color: #fff;
+}
+
+.badge-in-process {
+    background-color: #4e73df;
+    color: #fff;
+}
+
+.badge-identified {
+    background-color: #f6c23e;
+    color: #fff;
+}
+
+.badge-mitigated {
+    background-color: #1cc88a;
+    color: #fff;
+}
+
+.badge-high {
+    background-color: #e74a3b;
+    color: #fff;
+}
+
+.badge-medium {
+    background-color: #f6c23e;
+    color: #fff;
+}
+
+.badge-low {
+    background-color: #1cc88a;
+    color: #fff;
+}
+
+/* Form modal styles */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+/* Toast notifications */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+}
+
+.toast {
+    min-width: 250px;
+}
+
+/* Detail view styles */
+.detail-item {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #4e73df;
+}
+
+/* Spinner for loading states */
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1060;
+}

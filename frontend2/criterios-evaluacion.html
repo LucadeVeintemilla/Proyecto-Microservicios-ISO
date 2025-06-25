@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criterios de Evaluación - SGSI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- El navbar se cargará dinámicamente desde partials/navbar.html -->
+
+    <main class="container py-4">
+        <h1 class="mb-4"><i class="fas fa-tasks me-2"></i>Criterios de Evaluación de Proveedores</h1>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <button class="btn btn-primary" id="btnNuevoCriterio"><i class="fas fa-plus me-2"></i>Nuevo Criterio</button>
+            <div class="input-group w-auto">
+                <input class="form-control" placeholder="Buscar criterio..." id="inputBuscarCriterio">
+                <button class="btn btn-outline-secondary" id="btnBuscarCriterio"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Peso</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaCriterios"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Criterio -->
+    <div class="modal fade" id="modalCriterio" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalCriterio">Nuevo Criterio</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formCriterio">
+                        <input type="hidden" name="id" id="criterioId">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre *</label>
+                                <input class="form-control" name="nombre" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Categoría *</label>
+                                <select class="form-select" name="categoria" required>
+                                    <option value="CALIDAD">Calidad</option>
+                                    <option value="SERVICIO">Nivel de Servicio</option>
+                                    <option value="TIEMPO">Tiempo de Respuesta</option>
+                                    <option value="PRECIO">Costo/Precio</option>
+                                    <option value="SEGURIDAD">Seguridad</option>
+                                    <option value="OTRO">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" name="descripcion" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Peso (0.0 - 1.0) *</label>
+                            <input type="number" class="form-control" name="peso" min="0" max="1" step="0.1" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary" id="btnGuardarCriterio">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/utility.js"></script>
+    <script src="assets/js/criterios-evaluacion.js"></script>
+</body>
+</html>

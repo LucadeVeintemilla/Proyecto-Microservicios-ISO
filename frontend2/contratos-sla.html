@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contratos y SLA - SGSI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- El navbar se cargará dinámicamente desde partials/navbar.html -->
+
+    <main class="container py-4">
+        <h1 class="mb-4"><i class="fas fa-file-contract me-2"></i>Contratos y SLA</h1>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <button class="btn btn-primary" id="btnNuevoContrato"><i class="fas fa-plus me-2"></i>Nuevo Contrato</button>
+            <div class="input-group w-auto">
+                <input class="form-control" placeholder="Buscar contrato..." id="inputBuscarContrato">
+                <button class="btn btn-outline-secondary" id="btnBuscarContrato"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Código</th>
+                                <th>Proveedor</th>
+                                <th>Servicio</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Fin</th>
+                                <th>SLAs</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaContratos"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Contrato -->
+    <div class="modal fade" id="modalContrato" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalContrato">Nuevo Contrato</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formContrato">
+                        <input type="hidden" name="id" id="contratoId">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Código *</label>
+                                <input class="form-control" name="codigo" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Proveedor *</label>
+                                <select class="form-select select2" name="proveedor_id" required></select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label class="form-label">Servicio *</label>
+                                <input class="form-control" name="servicio" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha Inicio *</label>
+                                <input type="date" class="form-control" name="fecha_inicio" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha Fin *</label>
+                                <input type="date" class="form-control" name="fecha_fin" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Valor</label>
+                                <input type="number" class="form-control" name="valor" step="0.01">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Moneda</label>
+                                <select class="form-select" name="moneda">
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="PEN">PEN</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="incluye_acuerdo_confidencialidad" id="checkConfidencialidad">
+                                    <label class="form-check-label" for="checkConfidencialidad">
+                                        Incluye acuerdo de confidencialidad
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="incluye_acuerdo_nivel_servicio" id="checkSLA">
+                                    <label class="form-check-label" for="checkSLA">
+                                        Incluye acuerdo de nivel de servicio (SLA)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" name="descripcion" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Documento (URL)</label>
+                            <input class="form-control" name="ruta_documento" placeholder="https://...">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary" id="btnGuardarContrato">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal SLA -->
+    <div class="modal fade" id="modalSLA" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalSLA">Acuerdos de Nivel de Servicio</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="slasContainer">
+                        <!-- Lista de SLAs existentes -->
+                    </div>
+                    <hr>
+                    <h6>Agregar nuevo SLA</h6>
+                    <form id="formSLA">
+                        <input type="hidden" name="contrato_id" id="slaContratoId">
+                        <input type="hidden" name="id" id="slaId">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre *</label>
+                                <input class="form-control" name="nombre" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Métrica *</label>
+                                <input class="form-control" name="metrica" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Valor Objetivo *</label>
+                                <input type="number" class="form-control" name="valor_objetivo" step="0.01" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Unidad</label>
+                                <input class="form-control" name="unidad" placeholder="%, horas, etc.">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Frecuencia de Medición</label>
+                                <input class="form-control" name="frecuencia_medicion">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Penalización</label>
+                                <input class="form-control" name="penalizacion">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" name="descripcion" rows="2"></textarea>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary" id="btnAgregarSLA">
+                                <i class="fas fa-plus me-1"></i> Agregar SLA
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/utility.js"></script>
+    <script src="assets/js/contratos-sla.js"></script>
+</body>
+</html>

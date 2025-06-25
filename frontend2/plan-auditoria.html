@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Auditoría - SGSI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- El navbar se cargará dinámicamente desde partials/navbar.html -->
+
+    <main class="container py-4">
+        <h1 class="mb-4"><i class="fas fa-calendar-alt me-2"></i>Plan de Auditoría</h1>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <button class="btn btn-primary" id="btnNuevaAuditoria"><i class="fas fa-plus me-2"></i>Nueva Auditoría</button>
+            <div class="input-group w-auto">
+                <input class="form-control" placeholder="Buscar auditoría..." id="inputBuscarAuditoria">
+                <button class="btn btn-outline-secondary" id="btnBuscarAuditoria"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Código</th>
+                                <th>Título</th>
+                                <th>Tipo</th>
+                                <th>Estado</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Fin</th>
+                                <th>Auditor Líder</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaAuditorias"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Auditoría -->
+    <div class="modal fade" id="modalAuditoria" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalAuditoria">Nueva Auditoría</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAuditoria">
+                        <input type="hidden" name="id" id="auditoriaId">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Código *</label>
+                                <input class="form-control" name="codigo" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Título *</label>
+                                <input class="form-control" name="titulo" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Tipo *</label>
+                                <select class="form-select" name="tipo" required>
+                                    <option value="INTERNA">Interna</option>
+                                    <option value="EXTERNA">Externa</option>
+                                    <option value="SEGUIMIENTO">Seguimiento</option>
+                                    <option value="CUMPLIMIENTO">Cumplimiento</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Estado *</label>
+                                <select class="form-select" name="estado" required>
+                                    <option value="PLANIFICADA">Planificada</option>
+                                    <option value="EN_EJECUCION">En Ejecución</option>
+                                    <option value="FINALIZADA">Finalizada</option>
+                                    <option value="CANCELADA">Cancelada</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha Inicio *</label>
+                                <input type="date" class="form-control" name="fecha_inicio" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha Fin *</label>
+                                <input type="date" class="form-control" name="fecha_fin" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Auditor Líder *</label>
+                                <select class="form-select select2" name="auditor_lider" required></select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Equipo Auditores</label>
+                                <select class="form-select select2" name="equipo_auditores" multiple></select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" name="descripcion" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Alcance</label>
+                            <textarea class="form-control" name="alcance" rows="3"></textarea>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Objetivos</label>
+                                <textarea class="form-control" name="objetivos" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Criterios</label>
+                                <textarea class="form-control" name="criterios" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary" id="btnGuardarAuditoria">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Lista de Verificación -->
+    <div class="modal fade" id="modalListaVerificacion" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalLista">Lista de Verificación</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="listasContainer">
+                        <!-- Listas de verificación existentes -->
+                    </div>
+                    <hr>
+                    <h6>Agregar nueva lista de verificación</h6>
+                    <form id="formListaVerificacion">
+                        <input type="hidden" name="auditoria_id" id="listaAuditoriaId">
+                        <input type="hidden" name="id" id="listaId">
+                        <div class="mb-3">
+                            <label class="form-label">Título *</label>
+                            <input class="form-control" name="titulo" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" name="descripcion" rows="2"></textarea>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary" id="btnAgregarListaVerificacion">
+                                <i class="fas fa-plus me-1"></i> Agregar Lista
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/utility.js"></script>
+    <script src="assets/js/plan-auditoria.js"></script>
+</body>
+</html>

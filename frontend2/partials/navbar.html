@@ -1,0 +1,57 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="mainNavbar">
+    <div class="container">
+        <a class="navbar-brand" href="index.html"><i class="fas fa-shield-alt me-2"></i>SGSI</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home me-1"></i>Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="riesgos.html"><i class="fas fa-chart-line me-1"></i>Riesgos</a></li>
+                <li class="nav-item"><a class="nav-link" href="documentacion.html"><i class="fas fa-file-alt me-1"></i>Documentación</a></li>
+                <!-- Auditorías -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i class="fas fa-clipboard-check me-1"></i>Auditorías</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="auditorias.html">Listado de Auditorías</a></li>
+                        <li><a class="dropdown-item" href="plan-auditoria.html">Plan de Auditoría</a></li>
+                        <li><a class="dropdown-item" href="auditores.html">Auditores</a></li>
+                        <li><a class="dropdown-item" href="hallazgos.html">Hallazgos</a></li>
+                        <li><a class="dropdown-item" href="acciones-correctivas.html">Acciones Correctivas</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="incidentes.html"><i class="fas fa-exclamation-triangle me-1"></i>Incidentes</a></li>
+                <!-- Proveedores -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i class="fas fa-truck me-1"></i>Proveedores</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="proveedores.html">Listado de Proveedores</a></li>
+                        <li><a class="dropdown-item" href="contratos-sla.html">Contratos y SLA</a></li>
+                        <li><a class="dropdown-item" href="criterios-evaluacion.html">Criterios de Evaluación</a></li>
+                        <li><a class="dropdown-item" href="evaluaciones-proveedor.html">Evaluaciones</a></li>
+                    </ul>
+                </li>
+                <!-- Administración -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i class="fas fa-users-cog me-1"></i>Administración</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="roles.html">Roles y Permisos</a></li>
+                        <li><a class="dropdown-item" href="usuarios.html">Usuarios</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="configuracion.html">Configuración</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="d-flex">
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle me-1"></i><span id="nombreUsuario">Usuario</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="perfil.html"><i class="fas fa-id-card me-2"></i>Mi Perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="btnCerrarSesion"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
